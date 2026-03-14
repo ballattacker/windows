@@ -1,6 +1,11 @@
 #!/bin/bash
 set -e # Exit on error
 
+echo "==> Localization"
+echo "en_US.UTF-8 UTF-8" >>/etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" >>/etc/locale.conf
+
 echo "==> Configuring pacman"
 sed -i 's/^#Color/Color\nILoveCandy/g' /etc/pacman.conf
 sed -i 's/^#ParallelDownloads/ParallelDownloads/g' /etc/pacman.conf
