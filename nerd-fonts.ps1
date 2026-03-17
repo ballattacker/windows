@@ -1,17 +1,30 @@
-# 1. Install the NerdFonts management module if not present
-if (!(Get-Module -ListAvailable -Name NerdFonts)) {
-    Write-Host "Installing NerdFonts helper module..." -ForegroundColor Cyan
-    Install-Module -Name NerdFonts -Scope CurrentUser -Force
-}
+# 1. Define the font you want (e.g., CascadiaMono, FiraCode, JetBrainsMono)
+$fontName = "CascadiaMono"
+$tempPath = "$env:TEMP\NerdFontTemp"
+$zipPath = "$tempPath\$fontName.zip"
+$extractPath = "$tempPath\Extracted"
 
-# 2. Install Cascadia Code Nerd Font (CaskaydiaCove)
-# Note: In the Nerd Fonts project, the "Cascadia Code" patch is named "CaskaydiaCove"
-Write-Host "Downloading and installing Cascadia Code Nerd Font..." -ForegroundColor Cyan
-Install-NerdFont -Name "CaskaydiaCove"
+# 2. Create clean temp directories
+if (Test-Path $tempPath) { Remove-Item $tempPath -Recurse -Force }
+New-Item -ItemType Directory -Path $extractPath -Force | Out-Null
 
-Write-Host "Successfully installed! You can now select 'CaskaydiaCove Nerd Font' in Terminal settings." -ForegroundColor Green
+# 3. Download the font zip directly from GitHub releases
+$url = "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/$fontName.zip"
+Write-Host "Downloading $fontName Nerd Font from GitHub..." -ForegroundColor Cyan
+Invoke-WebRequest -Uri $url -OutFile $zipPath
 
-Write-Host "Downloading and installing Cascadia Mono Nerd Font..." -ForegroundColor Cyan
-Install-NerdFont -Name "CaskaydiaMono"
+# 4. Extract font files
+Write-Host "Extracting files..." -ForegroundColor Cyan
+Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
 
-Write-Host "Successfully installed! You can now select 'CaskaydiaMono Nerd Font' in Terminal settings." -ForegroundColor Green
+# 5. Install fonts to Windows Fonts folder and Registry
+$shellApp = New-Object -ComObject Shell.Application
+$sourceFolder = $shellApp.Namespace($extractPath)
+$fontsFolder = $shellApp.Namespace(0x14) # 0x14 is the shell folder for Fonts
+
+# Filter for font files and pass the collection to the Shell's CopyHere method
+$fontsFolder.CopyHere(($sourceFolder.Items() | Where-Object { $_.Name -match '\.(ttf|otf)$' }), 0x10)
+
+# 6. Cleanup
+Remove-Item $tempPath -Recurse -Force
+Write-Host "Installation Complete! Please restart your terminal." -ForegroundColor Magenta
