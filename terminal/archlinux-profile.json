@@ -1,17 +1,20 @@
 {
   "profiles": [
     {
+      "commandline": "C:\\WINDOWS\\system32\\wsl.exe --distribution-id {45220328-574b-4aad-a4af-54fa457db245}",
       "colorScheme": "One Half Dark",
       "font": {
         "face": "CaskaydiaMono Nerd Font"
       },
-      "# guid": "{b5d45946-6b32-5e41-9121-1c1e69c8e804}",
+      "guid": "{b5d45946-6b32-5e41-9121-1c1e69c8e804}",
       "hidden": false,
+      "icon": "C:\\Users\\hehe\\AppData\\Local\\wsl\\{45220328-574b-4aad-a4af-54fa457db245}\\shortcut.ico",
       "name": "archlinux",
       "opacity": 50,
       "padding": "0",
+      "pathTranslationStyle": "wsl",
+      "startingDirectory": "~",
       "scrollbarState": "hidden",
-      "source": "Microsoft.WSL",
       "useAcrylic": true
     }
   ]

@@ -3,6 +3,7 @@ winget install Mozilla.Firefox
 winget install aria2.aria2
 winget install 7zip.7zip
 winget install strayge.tray-monitor
+winget install 9MSMLRH6LZF3 # Windows Notepad
 
 winget install Storik4pro.GoodbyeDPI-UI
 winget install Byron.dua-cli
